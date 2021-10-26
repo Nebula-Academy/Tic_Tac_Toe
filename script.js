@@ -35,7 +35,7 @@ function playerChange(){
 
 function restart(){
   gameState = ["", "", "", "", "", "", "", "", ""];
-  document.querySelectorAll('.box').forEach(box => box.innerHTML = "");
+  document.querySelectorAll('.box').forEach(box => {box.innerHTML = ""; box.style.backgroundColor = 'transparent'});
   currentPlayer='X';
   playerTurn.innerHTML = currentPlayer + "'s turn";
   gameActive = true;
@@ -48,8 +48,12 @@ function checkWin(){
     if(gameState[condition[0]] === '' || gameState[condition[1]] === '' || gameState[condition[2]] === ''){
       '';
     } else if(gameState[condition[0]] === gameState[condition[1]] && gameState[condition[0]] === gameState[condition[2]]){
-      playerChange();
       playerTurn.innerHTML = currentPlayer + " won!";
+      document.querySelectorAll('.box').forEach(box => {
+        if(Number(box.getAttribute('data')) == condition[0] ||  Number(box.getAttribute('data')) == condition[1] || Number(box.getAttribute('data')) == condition[2]){
+          box.style.backgroundColor = 'green'
+        }
+      });
       // you can bring this in secondarily
       gameActive = false;
     }
@@ -57,6 +61,7 @@ function checkWin(){
   // you can bring this in lastly for this function
   if(gameState.includes('') === false){
       playerTurn.innerHTML = "DRAW!"
+      gameActive = false;
   }
 }
 // start by creating a clicked function which log's "hi"
@@ -73,9 +78,11 @@ function clicked(e){
   if(gameActive === false){return};
   // the following condition should be one of the LAST items completed
   if(e.target.innerHTML === ''){
-  // the following line should be one of the FIRST items completed
     fillBox(e.target);
+
+    checkWin();
+    if(gameActive === false){return};
+    // the following line should be one of the FIRST items completed
     playerChange();
-    checkWin();  
   }
 }
