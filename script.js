@@ -118,8 +118,8 @@ function playerChange(){
 }
 
 function restart(){
-  gameState = Array(42);
-  document.querySelectorAll('.box').forEach(box => {box.innerHTML = ""; box.style.backgroundColor = 'transparent'});
+  gameState = ["", "", "", "", "", "", "", "", ""];
+  document.querySelectorAll('.box').forEach(box => box.innerHTML = "");
   currentPlayer='X';
   playerTurn.innerHTML = currentPlayer + "'s turn";
   gameActive = true;
@@ -129,16 +129,11 @@ function checkWin(){
   // no point creating a for loop without them understanding, just go right for HoF to save time
   // after writing this function create the restart function and attach it to restart button in HTML (helps test faster if this works early)
   winningConditions.forEach(condition => {
-    if(gameState[condition[0]] === undefined || gameState[condition[1]] === undefined || gameState[condition[2]] === undefined){
-      null;
-    } else if(gameState[condition[0]] === gameState[condition[1]] && gameState[condition[0]] === gameState[condition[2]] && gameState[condition[0]] === gameState[condition[3]]){
-      console.log('winner')
+    if(gameState[condition[0]] === '' || gameState[condition[1]] === '' || gameState[condition[2]] === ''){
+      '';
+    } else if(gameState[condition[0]] === gameState[condition[1]] && gameState[condition[0]] === gameState[condition[2]]){
+      playerChange();
       playerTurn.innerHTML = currentPlayer + " won!";
-      document.querySelectorAll('.box').forEach(box => {
-        if(Number(box.getAttribute('id')) == condition[0] ||  Number(box.getAttribute('id')) == condition[1] || Number(box.getAttribute('id')) == condition[2] || Number(box.getAttribute('id')) == condition[3]){
-          box.style.backgroundColor = 'green'
-        }
-      });
       // you can bring this in secondarily
       gameActive = false;
     }
@@ -146,7 +141,6 @@ function checkWin(){
   // you can bring this in lastly for this function
   if(gameState.includes(undefined) === false){
       playerTurn.innerHTML = "DRAW!"
-      gameActive = false;
   }
 }
 // start by creating a clicked function which log's "hi"
@@ -163,11 +157,10 @@ function clicked(e){
   if(gameActive === false){return};
   // the following condition should be one of the LAST items completed
   if(e.target.innerHTML === ''){
-    fillBox(e.target.getAttribute('id'));
-
-    checkWin();
-    if(gameActive === false){return};
-    // the following line should be one of the FIRST items completed
+  // the following line should be one of the FIRST items completed
+    fillBox(e.target);
     playerChange();
+    checkWin();
+    if(gameActive === false){return};  
   }
 }
