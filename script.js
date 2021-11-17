@@ -59,7 +59,7 @@ function checkWin(){
     }
   })
   // you can bring this in lastly for this function
-  if(gameState.includes('') === false){
+  if(gameState.includes('') === false && gameActive){
       playerTurn.innerHTML = "DRAW!"
       gameActive = false;
   }
